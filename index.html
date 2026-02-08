@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Be My Valentine?</title>
+
+  <!-- Handwritten font -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Caveat', cursive;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(270deg, #ffdde1, #ee9ca7, #ffdde1);
+      background-size: 600% 600%;
+      animation: gradientBG 10s ease infinite;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card {
+      background: rgba(255,255,255,0.9);
+      padding: 40px 30px 50px;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      margin-bottom: 30px;
+      color: #ff4d6d;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    button {
+      padding: 14px 32px;
+      font-size: 1.6rem;
+      border-radius: 12px;
+      cursor: pointer;
+      border: none;
+      width: 120px;
+      height: 60px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    #yesBtn {
+      background: #ff4d6d;
+      color: white;
+      box-shadow: 0 6px 14px rgba(255,77,109,0.4);
+    }
+
+    #yesBtn:hover {
+      transform: scale(1.1);
+    }
+
+    #noBtn {
+      background: white;
+      color: #ff4d6d;
+      border: 2px solid #ff4d6d;
+      position: relative; /* starts next to Yes */
+      z-index: 10;
+    }
+
+    .message {
+      display: none;
+      font-size: 2.2rem;
+      color: #ff4d6d;
+    }
+
+    .confetti {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: red;
+      animation: fall 3s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <h1 id="question">Will you be my Valentine? 💖</h1>
+    <div class="buttons" id="buttons">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+    <div class="message" id="message">
+      YAY!!! 💕🥰💍<br><br>
+      I’m not great at dramatic speeches, but I do know this —<br>
+      I really like you, and being around you just feels right 💖<br><br>
+      <em>I promise our plot won't have any unnecessary breakups or 10-year time skips. Just lunch. See you soon 😌💕</em><br><br>
+      <button onclick="reset()">Play again</button>
+    </div>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const message = document.getElementById('message');
+    const buttons = document.getElementById('buttons');
+    const question = document.getElementById('question');
+
+    function randomPosition() {
+      const padding = 20;
+      const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+    }
+
+    function moveNo() {
+      noBtn.style.position = 'fixed';
+      randomPosition();
+      // K‑drama themed tease
+      question.innerHTML = "Even if we’re in Episode 16 and the emotional OST starts playing while it miraculously snows in slow motion... the answer is still YES. 😏";
+    }
+
+    // EVIL MODE 😈
+    noBtn.addEventListener('mouseenter', moveNo);
+    noBtn.addEventListener('mousemove', moveNo);
+
+    yesBtn.addEventListener('click', () => {
+      buttons.style.display = 'none';
+      question.style.display = 'none';
+      message.style.display = 'block';
+      launchConfetti();
+    });
+
+    function launchConfetti() {
+      for (let i = 0; i < 120; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
+        confetti.style.animationDuration = 2 + Math.random() * 2 + 's';
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 4000);
+      }
+    }
+
+    function reset() {
+      noBtn.style.position = 'relative';
+      noBtn.style.left = '0';
+      noBtn.style.top = '0';
+      message.style.display = 'none';
+      buttons.style.display = 'flex';
+      question.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
